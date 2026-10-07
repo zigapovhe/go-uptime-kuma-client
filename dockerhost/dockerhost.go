@@ -9,7 +9,7 @@ import (
 // Docker hosts can be used to connect to Docker daemons for container monitoring.
 type DockerHost struct {
 	ID           int64  `json:"id"`
-	UserID       int64  `json:"userId"`
+	UserID       any    `json:"userId"`
 	DockerDaemon string `json:"dockerDaemon"` // Connection string (e.g., "unix:///var/run/docker.sock", "tcp://host:2375")
 	DockerType   string `json:"dockerType"`   // "socket" or "tcp"
 	Name         string `json:"name"`         // Human-readable name

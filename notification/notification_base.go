@@ -23,7 +23,7 @@ type Base struct {
 	IsActive      bool   `json:"active"`
 	IsDefault     bool   `json:"isDefault"`
 	ApplyExisting bool   `json:"applyExisting"`
-	UserID        int64  `json:"userId"`
+	UserID        any    `json:"userId"`
 
 	typeFromConfigStr string
 	configStr         string
@@ -40,7 +40,7 @@ func (b *Base) UnmarshalJSON(data []byte) error {
 		ID        int64  `json:"id"`
 		Name      string `json:"name"`
 		IsActive  bool   `json:"active"`
-		UserID    int64  `json:"userId"`
+		UserID    any    `json:"userId"`
 		IsDefault bool   `json:"isDefault"`
 		ConfigStr string `json:"config"`
 	}{}

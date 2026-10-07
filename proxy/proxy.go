@@ -10,7 +10,7 @@ import (
 // Proxies can be used by monitors to route requests through HTTP/HTTPS/SOCKS proxy servers.
 type Proxy struct {
 	ID          int64     `json:"id"`
-	UserID      int64     `json:"userId"`
+	UserID      any       `json:"userId"`
 	Protocol    string    `json:"protocol"`
 	Host        string    `json:"host"`
 	Port        int       `json:"port"`
@@ -35,7 +35,7 @@ func (p Proxy) String() string {
 func (p *Proxy) UnmarshalJSON(data []byte) error {
 	aux := &struct {
 		ID          int64  `json:"id"`
-		UserID      int64  `json:"userId"`
+		UserID      any    `json:"userId"`
 		Protocol    string `json:"protocol"`
 		Host        string `json:"host"`
 		Port        int    `json:"port"`
@@ -112,7 +112,7 @@ func (p Proxy) MarshalJSON() ([]byte, error) {
 
 	data, err := json.Marshal(&struct {
 		ID          int64  `json:"id"`
-		UserID      int64  `json:"userId"`
+		UserID      any    `json:"userId"`
 		Protocol    string `json:"protocol"`
 		Host        string `json:"host"`
 		Port        int    `json:"port"`
