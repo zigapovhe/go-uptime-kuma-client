@@ -326,10 +326,25 @@ func New(ctx context.Context, baseURL string, username string, password string, 
 		}
 	}
 
-	client, err := socketio.NewClient(
-		socketio.WithRawURL(baseURL),
-		socketio.WithLogger(c.socketioLogger),
-	)
+	var cookie string
+	if username != "" && password != "" {
+		var err error
+		cookie, err = signInBetterAuth(ctxWithConnectTimeout, baseURL, username, password)
+		if err != nil {
+			return nil, fmt.Errorf("login: %w", err)
+		}
+	}
+
+	var client *socketio.Client
+	var err error
+	if cookie != "" {
+		client, err = newCookieSocketClient(baseURL, cookie, c.socketioLogger)
+	} else {
+		client, err = socketio.NewClient(
+			socketio.WithRawURL(baseURL),
+			socketio.WithLogger(c.socketioLogger),
+		)
+	}
 	if err != nil {
 		return nil, fmt.Errorf("create socketio client: %w", err)
 	}
@@ -537,7 +552,7 @@ func New(ctx context.Context, baseURL string, username string, password string, 
 		}
 	}()
 
-	if username != "" && password != "" {
+	if username != "" && password != "" && cookie == "" {
 		_, err = c.syncEmit(
 			ctxWithConnectTimeout,
 			"login",
